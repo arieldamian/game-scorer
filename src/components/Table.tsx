@@ -1,54 +1,28 @@
 import react from 'react';
-import { useState, useRef } from 'react';
+import { useState } from 'react';
+import type { PlayersMap } from './GameContainer';
 
-interface PlayersMap {
-    [key: number]: number[];
+interface TableProps {
+	playersMap: PlayersMap;
+	displayModalForPlayer: (playerId: number) => void;
 }
 
-export default function Table() {
-	const modalRef = useRef();
-    const playerId = 1;
-    const playerId2 = 2;
-    const playerId3 = 3;
-    const [playersMap, setPlayersMap] = useState<PlayersMap>({
-        [playerId]: [],
-        [playerId2]: [],
-        [playerId3]: []
-    });
+export default function Table({ playersMap, displayModalForPlayer }: TableProps) {
+	const calculateLabel = (player: number, index: number): string => {
+		// If player exists and has a score at the given index, return the score
+		// If position is last value + 1 return '+' string
+		// Otherwise return empty string
+		if (playersMap[player] && playersMap[player][index]) {
+			return playersMap[player][index].toString();
+		} else if (index === playersMap[player].length) {
+			return '+';
+		}
 
-    const addScore = (playerId: number, score: number) => {
-        // Add score should take the last value of the array and add the score to it
-        // beware that the array could be empty
-        // If the array is empty, add the score to the array
-
-        const playerScores = playersMap[playerId];
-        const lastScore = playerScores[playerScores.length - 1] || 0;
-        const newScore = lastScore + score;
-
-        const newPlayersMap = {
-            ...playersMap,
-            [playerId]: [...playerScores, newScore]
-        }
-
-        setPlayersMap(newPlayersMap);
-    }
-
-    const calculateLabel = (player: number, index: number): string => {
-        // If player exists and has a score at the given index, return the score
-        // If position is last value + 1 return '+' string
-        // Otherwise return empty string
-        if (playersMap[player] && playersMap[player][index]) {
-            return playersMap[player][index].toString();
-        } else if (index === playersMap[player].length) {
-            return '+';
-        }
-
-        return '';
-    }
+		return '';
+	}
 
     const rows = Object.values(playersMap).reduce((max, player) => Math.max(max, player.length), 0) + 1;
-
-    return	<>
+  return (
 		<table>
 			<thead>
 				<tr>
@@ -61,7 +35,7 @@ export default function Table() {
 						<tr key={index}>
 							{Object.keys(playersMap).map((player) => (
 								<td key={player}
-									onClick={index === playersMap[Number(player)].length ? () => addScore(Number(player), 50) : undefined}
+									onClick={index === playersMap[Number(player)].length ? () => displayModalForPlayer(Number(player)) : undefined}
 								>
 									{calculateLabel(Number(player), index)}
 								</td>
@@ -72,10 +46,5 @@ export default function Table() {
 				}
 			</tbody>
 		</table>
-		<dialog ref={modalRef}>
-			<button autofocus onClick={() => modalRef?.current!.close()}>Close</button>
-			<p>This modal dialog has a groovy backdrop!</p>
-		</dialog>
-		<button onClick={() => modalRef?.current!.showModal()}>Show the dialog</button>
-	</>
+	);
 }
