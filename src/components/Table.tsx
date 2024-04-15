@@ -1,11 +1,12 @@
-import type { PlayersMap } from './GameContainer';
+import type { PlayerNamesInterface, PlayersMap } from './GameContainer';
 
 interface TableProps {
+  playersNames: PlayerNamesInterface;
 	playersMap: PlayersMap;
 	displayModalForPlayer: (playerId: number) => void;
 }
 
-export default function Table({ playersMap, displayModalForPlayer }: TableProps) {
+export default function Table({ playersNames, playersMap, displayModalForPlayer }: TableProps) {
 	const calculateLabel = (player: number, index: number): string => {
 		// If player exists and has a score at the given index, return the score
 		// If position is last value + 1 return '+' string
@@ -25,7 +26,7 @@ export default function Table({ playersMap, displayModalForPlayer }: TableProps)
       <table className="w-full text-center text-sm text-gray-500 dark:text-gray-400">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
-            {Object.keys(playersMap).map((player) => <th scope="col" className="px-6 py-3" key={player}>{player}</th>)}
+            {Object.entries(playersNames).map(([id, playerName]) => <th scope="col" className="px-6 py-3" key={id}>{playerName}</th>)}
           </tr>
         </thead>
         <tbody>
