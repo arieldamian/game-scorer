@@ -1,11 +1,12 @@
 import react from 'react';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 interface PlayersMap {
     [key: number]: number[];
 }
 
 export default function Table() {
+	const modalRef = useRef();
     const playerId = 1;
     const playerId2 = 2;
     const playerId3 = 3;
@@ -46,30 +47,35 @@ export default function Table() {
     }
 
     const rows = Object.values(playersMap).reduce((max, player) => Math.max(max, player.length), 0) + 1;
-    return <table>
-        <thead>
-            <tr>
-                {Object.keys(playersMap).map((player) => <th key={player}>{player}</th>)}
-            </tr>
-        </thead>
-        <tbody>
-            {
-                Array.from({ length: rows }).map((_, index) => (
-					<tr key={index}>
-                        {Object.keys(playersMap).map((player) => (
-							<td key={player}
-								onClick={index === playersMap[Number(player)].length ? () => addScore(Number(player), 50) : undefined}
-							>
-								{calculateLabel(Number(player), index)}
-							</td>
-						))}
-                    </tr>
-				))
-            
-            }
-            {/* <tr>
-                {Object.keys(playersMap).map((player) => <td onClick={() => addScore(Number(player), 10)}>+</td>)}
-            </tr> */}
-        </tbody>
-    </table>
+
+    return	<>
+		<table>
+			<thead>
+				<tr>
+					{Object.keys(playersMap).map((player) => <th key={player}>{player}</th>)}
+				</tr>
+			</thead>
+			<tbody>
+				{
+					Array.from({ length: rows }).map((_, index) => (
+						<tr key={index}>
+							{Object.keys(playersMap).map((player) => (
+								<td key={player}
+									onClick={index === playersMap[Number(player)].length ? () => addScore(Number(player), 50) : undefined}
+								>
+									{calculateLabel(Number(player), index)}
+								</td>
+							))}
+						</tr>
+					))
+				
+				}
+			</tbody>
+		</table>
+		<dialog ref={modalRef}>
+			<button autofocus onClick={() => modalRef?.current!.close()}>Close</button>
+			<p>This modal dialog has a groovy backdrop!</p>
+		</dialog>
+		<button onClick={() => modalRef?.current!.showModal()}>Show the dialog</button>
+	</>
 }
