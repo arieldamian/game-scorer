@@ -67,11 +67,6 @@ export default function GameContainer() {
       <h1>10.000 Scorer</h1>
 			<Table playersNames={playersNames} playersMap={playersMap} displayModalForPlayer={displayModalForPlayer}/>
 			<Modal showModal={showModal} onModalClose={onCloseModal} />
-			{/* <dialog ref={modalRef}>
-				<button autoFocus onClick={() => modalRef?.current!.close()}>Close</button>
-				<p>This modal dialog has a groovy backdrop!</p>
-			</dialog>
-			<button onClick={() => modalRef?.current!.showModal()}>Show the dialog</button> */}
 		</>
 	);
 }
