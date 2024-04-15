@@ -22,7 +22,7 @@ export default function Table({ playersNames, playersMap, displayModalForPlayer 
 
   const rows = Object.values(playersMap).reduce((max, player) => Math.max(max, player.length), 0) + 1;
   return (
-    <div className="relative overflow-x-auto w-full">
+    <div className="relative overflow-x-auto shadow-md rounded-sm w-full">
       <table className="w-full text-center text-sm text-gray-500 dark:text-gray-400">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
@@ -32,7 +32,7 @@ export default function Table({ playersNames, playersMap, displayModalForPlayer 
         <tbody>
           {
             Array.from({ length: rows }).map((_, index) => (
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700" key={index}>
+              <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700" key={index}>
                 {Object.keys(playersMap).map((player) => (
                   <td className="px-6 py-4" key={player}
                     onClick={index === playersMap[Number(player)].length ? () => displayModalForPlayer(Number(player)) : undefined}
