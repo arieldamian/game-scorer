@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import Table from '../Table/Table.tsx';
-import Modal from '../Modal.tsx';
+import Table from './Table.tsx';
+import Modal from './Modal.tsx';
 
 export interface PlayersMap {
 	[key: number]: number[];
