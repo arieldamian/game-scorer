@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import Table from '../components/Table.tsx';
-import Modal from './Modal.tsx';
+import Table from '../Table/Table.tsx';
+import Modal from '../Modal.tsx';
 
 export interface PlayersMap {
 	[key: number]: number[];
@@ -50,6 +50,7 @@ export default function GameContainer() {
 
 	return (
 		<>
+      <h1>10.000 Scorer</h1>
 			<Table playersMap={playersMap} displayModalForPlayer={displayModalForPlayer}/>
 			<Modal showModal={showModal} onModalClose={onCloseModal} />
 			{/* <dialog ref={modalRef}>

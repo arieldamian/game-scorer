@@ -1,6 +1,6 @@
-import react from 'react';
-import { useState } from 'react';
-import type { PlayersMap } from './GameContainer';
+import type { PlayersMap } from '../GameContainer/GameContainer';
+
+import './index.css';
 
 interface TableProps {
 	playersMap: PlayersMap;
