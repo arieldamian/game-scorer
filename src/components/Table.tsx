@@ -42,7 +42,6 @@ export default function Table({ playersNames, playersMap, displayModalForPlayer 
                 ))}
               </tr>
             ))
-          
           }
         </tbody>
       </table>
