@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import confetti from 'canvas-confetti'
+
 import Table from './Table.tsx';
 import Modal from './Modal.tsx';
 
@@ -62,6 +64,7 @@ export default function GameContainer() {
 
       setPlayersMap(newPlayersMap);
       setCurrentPlayer(null);
+      confetti();
       return;
     }
 
