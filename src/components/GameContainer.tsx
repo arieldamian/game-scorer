@@ -40,9 +40,6 @@ export default function GameContainer() {
 	const [playersMap, setPlayersMap] = useState<PlayersMap>(generatePlayersMap(playersNames));
 
 	const addScore = (playerId: number, score: number) => {
-		// Add score should take the last value of the array and add the score to it
-		// beware that the array could be empty
-		// If the array is empty, add the score to the array
 		const playerScores = playersMap[playerId];
 		const lastScore = playerScores[playerScores.length - 1] || 0;
 		const newScore = lastScore + score;
@@ -56,7 +53,6 @@ export default function GameContainer() {
     }
 
     if (newScore === 10000) {
-      // If the score is 10000, add it to the array and finish the game
       const newPlayersMap = {
         ...playersMap,
         [playerId]: [...playerScores, newScore],
