@@ -5,47 +5,44 @@ import Table from './Table.tsx';
 import Modal from './Modal.tsx';
 import Toast from './Toast.tsx';
 
-export interface PlayersMap {
+export interface Scores {
 	[key: number]: number[];
 }
 
-export interface PlayerNamesInterface {
+export interface Players {
   [key: number]: string;
 }
 
-const playersNames: PlayerNamesInterface = {
-  1: 'Tota',
-  2: 'Poncho',
-  3: 'Dudi',
-  4: 'Agus',
-  5: 'Hugo',
-  6: 'Marita',
-  7: 'Nilda',
-  8: 'Raul',
-};
-
-const generatePlayersMap = (players: PlayerNamesInterface): PlayersMap => {
-  const playersMap: PlayersMap = {};
-
-  for (const [playerId] of Object.entries(players)) {
-    playersMap[Number(playerId)] = [];
-  }
-
-  return playersMap;
+interface GameContainerProps {
+  players: Players;
+  storedScores: Scores | null;
+  saveScores: (scores: Scores) => void;
 }
 
-export default function GameContainer() {
+const generateScores = (players: Players): Scores => {
+  const scores: Scores = {};
+  for (const [playerId] of Object.entries(players)) {
+    scores[Number(playerId)] = [];
+  }
+
+  return scores;
+}
+
+export default function GameContainer({ players, storedScores, saveScores }: GameContainerProps) {
 	const [currentPlayer, setCurrentPlayer] = useState<number | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [showToast, setShowToast] = useState(false);
-	const [playersMap, setPlayersMap] = useState<PlayersMap>(generatePlayersMap(playersNames));
+	const [scores, setScores] = useState<Scores>(storedScores ?? generateScores(players));
 
 	const addScore = (playerId: number, score: number) => {
-		const playerScores = playersMap[playerId];
+		const playerScores = scores[playerId];
 		const lastScore = playerScores[playerScores.length - 1] || 0;
 		const newScore = lastScore + score;
 
+    setCurrentPlayer(null);
+
     if (newScore > 10000) {
+      // Alert you did not win
       setShowToast(true);
       setTimeout(() => {
         setShowToast(false);
@@ -53,25 +50,20 @@ export default function GameContainer() {
       return;
     }
 
-    if (newScore === 10000) {
-      const newPlayersMap = {
-        ...playersMap,
-        [playerId]: [...playerScores, newScore],
-      }
+    const newScores = {
+      ...scores,
+      [playerId]: [...playerScores, newScore],
+    }
 
-      setPlayersMap(newPlayersMap);
-      setCurrentPlayer(null);
+    if (newScore === 10000) {
+      setScores(newScores);
+      saveScores(newScores);
       confetti();
       return;
     }
 
-		const newPlayersMap = {
-			...playersMap,
-			[playerId]: [...playerScores, newScore],
-		}
-
-		setPlayersMap(newPlayersMap);
-    setCurrentPlayer(null);
+		setScores(newScores);
+    saveScores(newScores);
 	}
 
 	const displayModalForPlayer = (playerId: number) => {
@@ -90,8 +82,8 @@ export default function GameContainer() {
 	return (
 		<>
       <h1 className='my-4'>10.000 Scorer</h1>
-			<Table playersNames={playersNames} playersMap={playersMap} displayModalForPlayer={displayModalForPlayer}/>
-			<Modal showModal={showModal} onModalClose={onCloseModal} playerName={playersNames[currentPlayer!]} />
+			<Table players={players} scores={scores} displayModalForPlayer={displayModalForPlayer}/>
+			<Modal showModal={showModal} onModalClose={onCloseModal} playerName={players[currentPlayer!]} />
       <Toast showToast={showToast} content="¡Te pasaste de 10.000!"/>
 		</>
 	);
