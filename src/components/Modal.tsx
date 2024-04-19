@@ -51,11 +51,11 @@ export default function Modal({ showModal, onModalClose, playerName }: ModalProp
           <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
             Puntaje para <span className="italic underline">{playerName}</span>
           </h3>
-          <button onClick={handleDialogClose} type="button" className="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+          <div onClick={handleDialogClose} className="cursor-pointer end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
               <svg className="w-3 h-3" aria-hidden="true" fill="none" viewBox="0 0 14 14">
                   <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
               </svg>
-          </button>
+          </div>
         </div>
         <div className="flex items-center my-8">
           <label
@@ -64,7 +64,7 @@ export default function Modal({ showModal, onModalClose, playerName }: ModalProp
           >Ingresar valor</label>
           <input
             autoFocus
-            type="number"
+            type="tel"
             id="number"
             className="w-auto ml-6 bg-gray-50 border border-gray-300 text-center text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
             value={value}
