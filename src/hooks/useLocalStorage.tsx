@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import type { Players, Scores } from "../components/GameContainer";
 
-const GAME_KEY = 'game';
+const SCORES_KEY = 'scores';
 const PLAYERS_KEY = 'players';
 
-export default function useLocalStorage(): [Players, Scores | null, (players: Players) => void, (scores: Scores) => void, boolean] {
+export default function useLocalStorage(): [Players, Scores | null, (players: Players) => void, (scores: Scores) => void, () => void, boolean] {
     const [players, setPlayers] = useState<Players>({});
     const [scores, setScores] = useState<Scores | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -15,7 +15,7 @@ export default function useLocalStorage(): [Players, Scores | null, (players: Pl
     };
   
     const saveScores = (scores: Scores) => {
-      localStorage.setItem(GAME_KEY, JSON.stringify(scores));
+      localStorage.setItem(SCORES_KEY, JSON.stringify(scores));
       setScores(scores);
     };
   
@@ -28,12 +28,19 @@ export default function useLocalStorage(): [Players, Scores | null, (players: Pl
     };
   
     const retrieveScores = () => {
-      const savedScoresString = localStorage.getItem(GAME_KEY);
+      const savedScoresString = localStorage.getItem(SCORES_KEY);
   
       if (savedScoresString) {
         setScores(JSON.parse(savedScoresString));
       }
     };
+
+    const deleteEverything = () => {
+      localStorage.removeItem(PLAYERS_KEY);
+      localStorage.removeItem(SCORES_KEY);
+      setPlayers({});
+      setScores(null);
+    }
   
     useEffect(() => {
       retrievePlayers();
@@ -48,6 +55,7 @@ export default function useLocalStorage(): [Players, Scores | null, (players: Pl
       scores,
       savePlayers,
       saveScores,
+      deleteEverything,
       isLoading,
     ];
   };
