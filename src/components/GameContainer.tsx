@@ -17,6 +17,7 @@ interface GameContainerProps {
   players: Players;
   storedScores: Scores | null;
   saveScores: (scores: Scores) => void;
+  deleteEverything: () => void;
 }
 
 const generateScores = (players: Players): Scores => {
@@ -28,7 +29,7 @@ const generateScores = (players: Players): Scores => {
   return scores;
 }
 
-export default function GameContainer({ players, storedScores, saveScores }: GameContainerProps) {
+export default function GameContainer({ players, storedScores, saveScores, deleteEverything }: GameContainerProps) {
 	const [currentPlayer, setCurrentPlayer] = useState<number | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [showToast, setShowToast] = useState(false);
@@ -78,6 +79,10 @@ export default function GameContainer({ players, storedScores, saveScores }: Gam
 			addScore(currentPlayer, value);
 		}
 	}
+  
+  const forceResetGame = () => {
+    deleteEverything();
+  }
 
 	return (
 		<>
@@ -85,6 +90,7 @@ export default function GameContainer({ players, storedScores, saveScores }: Gam
 			<Table players={players} scores={scores} displayModalForPlayer={displayModalForPlayer}/>
 			<Modal showModal={showModal} onModalClose={onCloseModal} playerName={players[currentPlayer!]} />
       <Toast showToast={showToast} content="¡Te pasaste de 10.000!"/>
+      <button onClick={forceResetGame}>Reiniciar feo</button>
 		</>
 	);
 }
